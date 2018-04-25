@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP8266 WebSocket Demo</title>
+    <style>
+        body {
+            background-color: #808080;
+            font-family: Arial, Helvetica, Sans-Serif;
+            Color: #000000;
+            height: 100%;
+            margin: 0px;
+        }
+
+        html {
+            height: 100%;
+            margin: 0px;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 100%;
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Likely future */
+            height: 50%;
+        }
+
+        #forward {
+        }
+
+        #reverse {
+        }
+
+        .wrapper {
+            height: 100%;
+        }
+    </style>
+    <script>
+        var websock;
+        function start() {
+            websock = new WebSocket('ws://' + window.location.hostname + ':81/');
+            websock.onopen = function (evt) { console.log('websock open'); };
+            websock.onclose = function (evt) { console.log('websock close'); };
+            websock.onerror = function (evt) { console.log(evt); };
+            websock.onmessage = function (evt) {
+                console.log(evt);
+                var e = document.getElementById('ledstatus');
+                if (evt.data === 'ledon') {
+                    e.style.color = 'red';
+                }
+                else if (evt.data === 'ledoff') {
+                    e.style.color = 'black';
+                }
+                else {
+                    console.log('unknown event');
+                }
+            };
+        }
+        function drive(e) {
+            websock.send(e.id);
+        }
+
+        function stp() {
+            websock.send("stop");
+        }
+    </script>
+
+</head>
+<body onload="javascript:start();">
+
+    <h1>1030 Design Project Demo</h1>
+    <div class="wrapper">
+        <button id="forward" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Forward</button>
+        <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Reverse</button>
+    </div>
+
+
+</body>
+</html>
