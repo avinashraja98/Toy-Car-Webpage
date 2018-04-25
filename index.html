@@ -31,13 +31,28 @@
             -moz-user-select: none; /* Firefox all */
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Likely future */
-            height: 50%;
+            height: 25%;
         }
 
         #forward {
+          width:50%;
+          margin-left:25%;
         }
 
         #reverse {
+          width:50%;
+          margin-left:25%;
+        }
+      
+        #left{
+          width:25%;
+          float:left;
+        }
+      
+        #right{
+          width:25%;
+          display:block;
+          margin-left:75%;
         }
 
         .wrapper {
@@ -80,6 +95,11 @@
     <h1>1030 Design Project Demo</h1>
     <div class="wrapper">
         <button id="forward" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Forward</button>
+        
+        <button id="left" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Left</button>
+      
+        <button id="right" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Right</button>
+        
         <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Reverse</button>
     </div>
 
