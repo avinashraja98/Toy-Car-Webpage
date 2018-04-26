@@ -10,12 +10,10 @@
             height: 100%;
             margin: 0px;
         }
-
         html {
             height: 100%;
             margin: 0px;
         }
-
         .button {
             background-color: #4CAF50; /* Green */
             border: none;
@@ -33,12 +31,10 @@
             user-select: none; /* Likely future */
             height: 25%;
         }
-
         #forward {
           width:50%;
           margin-left:25%;
         }
-
         #reverse {
           width:50%;
           margin-left:25%;
@@ -54,7 +50,6 @@
           display:block;
           margin-left:75%;
         }
-
         .wrapper {
             height: 100%;
         }
@@ -83,9 +78,8 @@
         function drive(e) {
             websock.send(e.id);
         }
-
-        function stp() {
-            websock.send("stop");
+        function stp(e) {
+            websock.send("stop_"+e.id);
         }
     </script>
 
@@ -94,13 +88,13 @@
 
     <h1>1030 Design Project Demo</h1>
     <div class="wrapper">
-        <button id="forward" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Forward</button>
+        <button id="forward" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Forward</button>
         
-        <button id="left" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Left</button>
+        <button id="left" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Left</button>
       
-        <button id="right" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Right</button>
+        <button id="right" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Right</button>
         
-        <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp();" ontouchstart="drive(this);" ontouchend="stp();">Reverse</button>
+        <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Reverse</button>
     </div>
 
 
