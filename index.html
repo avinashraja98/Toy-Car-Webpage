@@ -11,12 +11,10 @@
             height: 100%;
             margin: 0px;
         }
-
         html {
             height: 100%;
             margin: 0px;
         }
-
         .button {
             background-color: #4CAF50;
             /* Green */
@@ -39,23 +37,18 @@
             /* Likely future */
             height: 25%;
         }
-
         #forward {
             width: 50%;
             margin-left: 25%;
         }
-
         #reverse {
             width: 50%;
             margin-left: 25%;
-
         }
-
         #left {
             width: 25%;
             float: left;
         }
-
         #right {
             width: 25%;
             display: block;
@@ -63,25 +56,23 @@
             /*margin-left:75%;*/
             /*margin-right:0%;*/
         }
-
         .wrapper {
             height: 100%;
         }
-
         .slidecontainer {
             width: 100%;
             /* Width of the outside container */
             margin-top: 5%;
             margin-bottom: 5%;
         }
-
         /* The slider itself */
-
         .slider {
+			margin-right:5%;
+			margin-left:5%;
             -webkit-appearance: none;
             /* Override default CSS styles */
             appearance: none;
-            width: 100%;
+            width: 90%;
             /* Full-width */
             height: 50px;
             /* Specified height */
@@ -95,16 +86,12 @@
             /* 0.2 seconds transition on hover */
             transition: opacity .2s;
         }
-
         /* Mouse-over effects */
-
         .slider:hover {
             opacity: 1;
             /* Fully shown on mouse-over */
         }
-
         /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             /* Override default look */
@@ -118,7 +105,6 @@
             cursor: pointer;
             /* Cursor on hover */
         }
-
         .slider::-moz-range-thumb {
             width: 50px;
             /* Set a specific slider handle width */
@@ -132,7 +118,6 @@
     </style>
     <script>
         var websock;
-
         function start() {
             websock = new WebSocket('ws://' + window.location.hostname + ':81/');
             websock.onopen = function(evt) {
@@ -155,17 +140,13 @@
                     console.log('unknown event');
                 }
             };
-
         }
-
         function drive(e) {
             websock.send(e.id);
         }
-
         function stp(e) {
             websock.send("stop_" + e.id);
         }
-
         function turn(e) {
             console.log(e.value);
             websock.send("slid_" + e.value);
