@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>ESP8266 WebSocket Demo</title>
+    <title>Ride-on Toy Car Modification Control Panel</title>
     <style>
         body {
             background-color: #808080;
@@ -45,21 +45,94 @@
             width: 50%;
             margin-left: 25%;
         }
-        #left {
+        #toggle {
             width: 25%;
-            float: left;
-        }
-        #right {
-            width: 25%;
-            display: block;
-            float: right;
-            /*margin-left:75%;*/
-            /*margin-right:0%;*/
+            height: 100px;
+            margin-left: 25%;
         }
         .wrapper {
             height: 100%;
         }
-        .slidecontainer {
+        .flipswitch {
+            float: right;
+            margin-right: 25%;
+            margin-top: 35px;
+            position: relative;
+            width: 125px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .flipswitch input[type=checkbox] {
+            display: none;
+        }
+        .flipswitch-label {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #999999;
+            border-radius: 50px;
+        }
+        .flipswitch-inner {
+            width: 200%;
+            margin-left: -100%;
+            -webkit-transition: margin 0.3s ease-in 0s;
+            -moz-transition: margin 0.3s ease-in 0s;
+            -ms-transition: margin 0.3s ease-in 0s;
+            -o-transition: margin 0.3s ease-in 0s;
+            transition: margin 0.3s ease-in 0s;
+        }
+        .flipswitch-inner:before,
+        .flipswitch-inner:after {
+            float: left;
+            width: 50%;
+            height: 30px;
+            padding: 0;
+            line-height: 30px;
+            font-size: 18px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .flipswitch-inner:before {
+            content: "Forward";
+            padding-left: 12px;
+            background-color: #4CAF50;
+            color: #FFFFFF;
+        }
+        .flipswitch-inner:after {
+            content: "Reverse";
+            padding-right: 12px;
+            background-color: #4CAF50;
+            color: #FFFFFF;
+            text-align: right;
+        }
+        .flipswitch-switch {
+            width: 40px;
+            margin: -5px;
+            background: #FFFFFF;
+            border: 2px solid #999999;
+            border-radius: 50px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 93px;
+            -webkit-transition: all 0.3s ease-in 0s;
+            -moz-transition: all 0.3s ease-in 0s;
+            -ms-transition: all 0.3s ease-in 0s;
+            -o-transition: all 0.3s ease-in 0s;
+            transition: all 0.3s ease-in 0s;
+        }
+        .flipswitch-cb:checked+.flipswitch-label .flipswitch-inner {
+            margin-left: 0;
+        }
+        .flipswitch-cb:checked+.flipswitch-label .flipswitch-switch {
+            right: 0;
+        }
+                .slidecontainer {
             width: 100%;
             /* Width of the outside container */
             margin-top: 5%;
@@ -67,8 +140,8 @@
         }
         /* The slider itself */
         .slider {
-			margin-right:5%;
-			margin-left:5%;
+      margin-right:5%;
+      margin-left:5%;
             -webkit-appearance: none;
             /* Override default CSS styles */
             appearance: none;
@@ -118,6 +191,7 @@
     </style>
     <script>
         var websock;
+        var toggleCount = 1;
         function start() {
             websock = new WebSocket('ws://' + window.location.hostname + ':81/');
             websock.onopen = function(evt) {
@@ -141,6 +215,27 @@
                 }
             };
         }
+        function toggleButton() {
+            if (toggleCount == 0) {
+                document.getElementById("toggle").innerHTML = "Child Button Enabled";
+                document.getElementById("toggle").style.backgroundColor = "#4CAF50";
+                toggleCount = 1;
+                websock.send("togg_1");
+            } else {
+                document.getElementById("toggle").innerHTML = "Child Button Disabled";
+                document.getElementById("toggle").style.backgroundColor = "red";
+                toggleCount = 0;
+                websock.send("togg_0");
+            }
+        }
+        function toggleDir() {
+            var checkBox = document.getElementById("fs");
+            if (checkBox.checked == true) {
+                websock.send("bDir_r");
+            } else {
+                websock.send("bDir_l");
+            }
+        }
         function drive(e) {
             websock.send(e.id);
         }
@@ -148,7 +243,6 @@
             websock.send("stop_" + e.id);
         }
         function turn(e) {
-            console.log(e.value);
             websock.send("slid_" + e.value);
         }
     </script>
@@ -157,23 +251,30 @@
 
 <body onload="javascript:start();">
 
-    <h1>1030 Design Project Demo</h1>
+    <h1>Ride-on Toy Car Modification Control Panel</h1>
     <div class="wrapper">
-        <button id="forward" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Forward</button>
+        <button id="forward" class="button" onmousedown="drive(this)" onmouseup="stp(this)" ontouchstart="drive(this)" ontouchend="stp(this)">Forward</button>
 
+        <button id="toggle" class="button" onclick="toggleButton()">Child Button Enabled</button>
+        <div class="flipswitch">
+            <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" onclick="toggleDir()" checked>
+            <label class="flipswitch-label" for="fs">
+        <div class="flipswitch-inner"></div>
+        <div class="flipswitch-switch"></div>
+    </label>
+        </div>
         <div class="slidecontainer">
             <input type="range" min="0" max="180" value="90" class="slider" id="myRange">
         </div>
-
-        <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Reverse</button>
-    </div>
-    <script>
+        <script>
         var slider = document.getElementById("myRange");
         // Update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
             turn(this);
         }
-    </script>
-
+        </script>
+        <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Reverse</button>
+    </div>
 </body>
+
 </html>
