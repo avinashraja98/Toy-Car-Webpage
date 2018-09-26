@@ -15,6 +15,9 @@
             height: 100%;
             margin: 0px;
         }
+		.wrapper {
+			margin-top:1%;
+		}
         .button {
             background-color: #4CAF50;
             /* Green */
@@ -37,6 +40,9 @@
             /* Likely future */
             height: 25%;
         }
+		.button:active {
+			background-color: red;
+		}
         #forward {
             width: 50%;
             margin-left: 25%;
@@ -245,32 +251,43 @@
         function turn(e) {
             websock.send("slid_" + e.value);
         }
+		function setSpeed(e) {		
+            websock.send("sped_" + e.value);			
+        }
     </script>
 
 </head>
 
 <body onload="javascript:start();">
 
-    <h1>Ride-on Toy Car Modification Control Panel</h1>
+    <!--<h1>Ride-on Toy Car Modification Control Panel</h1>-->
     <div class="wrapper">
         <button id="forward" class="button" onmousedown="drive(this)" onmouseup="stp(this)" ontouchstart="drive(this)" ontouchend="stp(this)">Forward</button>
 
         <button id="toggle" class="button" onclick="toggleButton()">Child Button Enabled</button>
         <div class="flipswitch">
             <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" onclick="toggleDir()" checked>
-            <label class="flipswitch-label" for="fs">
-        <div class="flipswitch-inner"></div>
-        <div class="flipswitch-switch"></div>
-    </label>
+        <label class="flipswitch-label" for="fs">
+			<div class="flipswitch-inner"></div>
+			<div class="flipswitch-switch"></div>
+		</label>
         </div>
-        <div class="slidecontainer">
-            <input type="range" min="0" max="180" value="90" class="slider" id="myRange">
+        <div class="slidecontainer" style="margin-bottom:0%">
+            <input type="range" min="0" max="180" value="90" class="slider" id="steer">
         </div>
+        <div class="slidecontainer" style="margin-top:0%">
+            <input type="range" min="0" max="1023" value="1023" class="slider" id="speed">
+        </div>		
         <script>
-        var slider = document.getElementById("myRange");
+        var slider = document.getElementById("steer");
         // Update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
             turn(this);
+        }
+		var slider2 = document.getElementById("speed");
+        // Update the current slider value (each time you drag the slider handle)
+        slider2.oninput = function() {
+            setSpeed(this);
         }
         </script>
         <button id="reverse" class="button" onmousedown="drive(this);" onmouseup="stp(this);" ontouchstart="drive(this);" ontouchend="stp(this);">Reverse</button>
